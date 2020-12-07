@@ -24,35 +24,27 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.BuyerAggregate
             IdentityGuid = identity;
         }
 
-        public string Street1 { get; private set; }
-        public string Street2 { get; private set; }
-        public string City { get; private set; }
-        public string State { get; private set; }
-        public string ZipCode { get; private set; }
+        public Address Address { get; private set; }
         public string AddressVerified { get; private set; } = string.Empty;
 
-        public void UpdateAddress(string street1, string street2, string city, string state, string zipCode)
+        public void UpdateAddress(Address address)
         {
-            AddressVerified = VerifyAddress(street1, street2, city, state, zipCode);
+            AddressVerified = VerifyAddress(address);
 
-            Street1 = street1;
-            Street2 = street2;
-            City = city;
-            State = state;
-            ZipCode = zipCode;
+            Address = address;
         }
 
-        private string VerifyAddress(string street1, string street2, string city, string state, string zipCode)
+        private string VerifyAddress(Address address)
         {
             string missing = "Missing Field: ";
-            if (string.IsNullOrEmpty(street1)) return missing + nameof(Street1);
-            if (string.IsNullOrEmpty(city)) return missing + nameof(City);
-            if (string.IsNullOrEmpty(state)) return missing + nameof(State);
-            if (string.IsNullOrEmpty(zipCode)) return missing + nameof(ZipCode);
+            if (string.IsNullOrEmpty(address.Street1)) return missing + nameof(address.Street1);
+            if (string.IsNullOrEmpty(address.City)) return missing + nameof(address.City);
+            if (string.IsNullOrEmpty(address.State)) return missing + nameof(address.State);
+            if (string.IsNullOrEmpty(address.ZipCode)) return missing + nameof(address.ZipCode);
 
             string mismatch = "Invalid State-ZipCode combination";
-            if (state != "NY" && zipCode == "12345") return mismatch;
-            if (state != "OH" && zipCode == "44240") return mismatch;
+            if (address.State != "NY" && address.ZipCode == "12345") return mismatch;
+            if (address.State != "OH" && address.ZipCode == "44240") return mismatch;
 
             return "Verified";
         }

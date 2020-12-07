@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.eShopWeb.Infrastructure.Data;
 
 namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    partial class CatalogContextModelSnapshot : ModelSnapshot
+    [Migration("20201207174652_BuyerAddress")]
+    partial class BuyerAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,7 +89,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Buyers");
+                    b.ToTable("Buyer");
                 });
 
             modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.BuyerAggregate.PaymentMethod", b =>
@@ -246,28 +248,23 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                                 .UseIdentityColumn();
 
                             b1.Property<string>("City")
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("State")
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Street1")
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Street2")
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("ZipCode")
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
+                                .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("BuyerId");
 
-                            b1.ToTable("Buyers");
+                            b1.ToTable("Buyer");
 
                             b1.WithOwner()
                                 .HasForeignKey("BuyerId");
