@@ -1,7 +1,9 @@
 ﻿using Ardalis.GuardClauses;
+using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities.BuyerAggregate
 {
@@ -24,6 +26,18 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.BuyerAggregate
         {
             Guard.Against.NullOrEmpty(identity, nameof(identity));
             IdentityGuid = identity;
+        }
+
+        public void AddAddress(Address address)
+        {
+            if(_buyerAddresses.Any(currentAddress => currentAddress.Address == address))
+            {
+                throw new DuplicateAddressException();
+            }
+            var newAddress = new BuyerAddress(this.Id);
+            newAddress.UpdateAddress(address);
+
+            _buyerAddresses.Add(newAddress);
         }
     }
 }

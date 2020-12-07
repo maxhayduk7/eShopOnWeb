@@ -6,10 +6,9 @@
         public Address Address { get; private set; }
         public string AddressVerified { get; private set; } = string.Empty;
 
-        public BuyerAddress(int buyerId, Address address)
+        public BuyerAddress(int buyerId)
         {
             BuyerId = buyerId;
-            Address = address;
         }
 
         private BuyerAddress()
