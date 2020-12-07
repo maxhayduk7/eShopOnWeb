@@ -11,6 +11,20 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.BuyerAggregate
         public string State { get; private set; }
         public string ZipCode { get; private set; }
 
+        public Address(string street1, string street2, string city, string state, string zipCode)
+        {
+            Street1 = street1;
+            Street2 = street2;
+            City = city;
+            State = state;
+            ZipCode = zipCode;
+        }
+
+        private Address()
+        {
+            // Required for EF
+        }
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Street1;
