@@ -1,0 +1,23 @@
+﻿@page "{buyerId}"
+@model Microsoft.eShopWeb.Web.Pages.BuyerModel
+@{
+}
+
+@if(!String.IsNullOrEmpty(Model.ErrorMessage))
+{
+<h1>@Model.ErrorMessage</h1>
+}
+else
+{
+<h1>Buyer: @Model.BuyerId</h1>
+
+<h2>Addresses</h2>
+
+<ul>
+    @foreach(var address in Model.Addresses)
+    {
+        <li>@address.ToString()</li>
+    }
+</ul>
+}
+

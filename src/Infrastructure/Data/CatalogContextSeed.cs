@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
+using Microsoft.eShopWeb.ApplicationCore.Entities.BuyerAggregate;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,12 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
 
                     await catalogContext.SaveChangesAsync();
                 }
+
+                if(!await catalogContext.Buyers.AnyAsync())
+                {
+                    await catalogContext.Buyers.AddRangeAsync(GetPreconfiguredBuyers());
+                    await catalogContext.SaveChangesAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -52,6 +59,16 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 }
                 throw;
             }
+        }
+
+        private static IEnumerable<Buyer> GetPreconfiguredBuyers()
+        {
+            var buyer = new Buyer("abc123");
+            var address1 = new Address("123 Main St.", "Apt 2", "Anytown", "TX", "99999");
+            buyer.AddAddress(address1);
+            var address2 = new Address("456 Any St.", "", "Midville", "OH", "44444");
+            buyer.AddAddress(address2);
+            return new List<Buyer> { buyer };
         }
 
         static IEnumerable<CatalogBrand> GetPreconfiguredCatalogBrands()
