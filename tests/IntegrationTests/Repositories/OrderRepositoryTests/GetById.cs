@@ -20,7 +20,7 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.OrderRepositoryTests
             var dbOptions = new DbContextOptionsBuilder<CatalogContext>()
                 .UseInMemoryDatabase(databaseName: "TestCatalog")
                 .Options;
-            _catalogContext = new CatalogContext(dbOptions);
+            _catalogContext = new CatalogContext(dbOptions, null);
             _orderRepository = new OrderRepository(_catalogContext);
         }
 

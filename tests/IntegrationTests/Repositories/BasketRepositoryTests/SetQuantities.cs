@@ -21,7 +21,7 @@ namespace Microsoft.eShopWeb.IntegrationTests.Repositories.BasketRepositoryTests
             var dbOptions = new DbContextOptionsBuilder<CatalogContext>()
                 .UseInMemoryDatabase(databaseName: "TestCatalog")
                 .Options;
-            _catalogContext = new CatalogContext(dbOptions);
+            _catalogContext = new CatalogContext(dbOptions, null);
             _basketRepository = new EfRepository<Basket>(_catalogContext);
         }
 
