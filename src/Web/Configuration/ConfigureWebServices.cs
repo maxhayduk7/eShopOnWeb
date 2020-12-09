@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.eShopWeb.ApplicationCore.Entities.BuyerAggregate;
 using Microsoft.eShopWeb.Web.Interfaces;
 using Microsoft.eShopWeb.Web.Services;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +11,7 @@ namespace Microsoft.eShopWeb.Web.Configuration
     {
         public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddMediatR(typeof(BasketViewModelService).Assembly);
+            services.AddMediatR(typeof(BasketViewModelService).Assembly, typeof(BuyerAddressUpdatedEvent).Assembly);
             services.AddScoped<IBasketViewModelService, BasketViewModelService>();
             services.AddScoped<CatalogViewModelService>();
             services.AddScoped<ICatalogItemViewModelService, CatalogItemViewModelService>();

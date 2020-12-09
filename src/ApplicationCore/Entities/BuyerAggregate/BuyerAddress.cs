@@ -18,6 +18,11 @@
 
         public void UpdateAddress(Address address)
         {
+            if (Address == address) return;
+
+            var updatedEvent = new BuyerAddressUpdatedEvent(buyerAddressId: Id, previousValue: Address, newValue: address);
+            Events.Add(updatedEvent);
+
             AddressVerified = VerifyAddress(address);
 
             Address = address;

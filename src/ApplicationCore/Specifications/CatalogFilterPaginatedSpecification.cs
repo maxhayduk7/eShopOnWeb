@@ -11,7 +11,9 @@ namespace Microsoft.eShopWeb.ApplicationCore.Specifications
             Query
                 .Where(i => (!brandId.HasValue || i.CatalogBrandId == brandId) &&
                 (!typeId.HasValue || i.CatalogTypeId == typeId))
-                .Paginate(skip, take);
+                .Skip(skip)
+                .Take(take);
+//                .Paginate(skip, take);
         }
     }
 }

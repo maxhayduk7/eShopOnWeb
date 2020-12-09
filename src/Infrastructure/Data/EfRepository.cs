@@ -57,7 +57,8 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
 
         public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
         {
-            _dbContext.Entry(entity).State = EntityState.Modified;
+//            _dbContext.Entry(entity).State = EntityState.Modified;
+            _dbContext.Set<T>().Update(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 

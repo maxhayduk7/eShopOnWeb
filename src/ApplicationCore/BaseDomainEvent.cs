@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System;
 
-namespace Microsoft.eShopWeb.ApplicationCore.Entities
+namespace Microsoft.eShopWeb.ApplicationCore
 {
     public abstract class BaseDomainEvent : INotification
     {

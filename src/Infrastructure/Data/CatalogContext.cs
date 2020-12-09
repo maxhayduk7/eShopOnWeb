@@ -30,6 +30,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
         public DbSet<Buyer> Buyers { get; set; }
+        public DbSet<BuyerAddressHistory> BuyerAddressHistories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
