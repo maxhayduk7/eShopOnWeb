@@ -17,14 +17,18 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
         private readonly IUriComposer _uriComposer;
         private readonly IMapper _mapper;
+        private readonly IAppLogger<ListPaged> _logger;
 
         public ListPaged(IAsyncRepository<CatalogItem> itemRepository,
             IUriComposer uriComposer,
-            IMapper mapper)
+            IMapper mapper,
+            IAppLogger<ListPaged> appLogger)
         {
             _itemRepository = itemRepository;
             _uriComposer = uriComposer;
             _mapper = mapper;
+            _logger = appLogger;
+
         }
 
         [HttpGet("api/catalog-items")]
@@ -55,6 +59,8 @@ namespace Microsoft.eShopWeb.PublicApi.CatalogItemEndpoints
                 item.PictureUri = _uriComposer.ComposePicUri(item.PictureUri);
             }
             response.PageCount = int.Parse(Math.Ceiling((decimal)totalItems / request.PageSize).ToString());
+
+            _logger.LogInformation($"Items count: {response.PageCount}");
 
             return Ok(response);
         }

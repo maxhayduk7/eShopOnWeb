@@ -137,6 +137,7 @@ namespace Microsoft.eShopWeb.Web
             });
             services.AddHttpContextAccessor();
             services.AddHealthChecks();
+            services.AddApplicationInsightsTelemetry();
             services.Configure<ServiceConfig>(config =>
             {
                 config.Services = new List<ServiceDescriptor>(services);
