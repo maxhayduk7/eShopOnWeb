@@ -53,7 +53,7 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
 
             await _orderRepository.AddAsync(order);
 
-            _reservationService.ReserveItems(items);
+            _reservationService.Reserve(order);
         }
     }
 }

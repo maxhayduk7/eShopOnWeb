@@ -5,6 +5,6 @@ namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
 {
     public interface IReservationService
     {
-        void ReserveItems(IEnumerable<OrderItem> orderedItems);
+        void Reserve(Order order);
     }
 }

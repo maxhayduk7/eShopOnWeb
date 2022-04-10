@@ -1,21 +1,29 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
+using Microsoft.eShopWeb.ApplicationCore.Exceptions;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Services
 {
+    // TODO: Refactor class, use async scenario
     public class ReservationService : IReservationService
     {
         private string url = Environment.GetEnvironmentVariable("AzureFunction");
 
-        public void ReserveItems(IEnumerable<OrderItem> orderedItems)
-            => orderedItems.Select(item => ReserveItem(item));
+        public void Reserve(Order order)
+        {
+            var responce = ReserveOrder(order);
 
-        private HttpWebResponse ReserveItem(OrderItem orderItem)
+            if (responce.StatusCode is not HttpStatusCode.OK)
+            {
+                throw new FailToReserveOrder(order.BuyerId);
+            }
+        }
+
+        private HttpWebResponse ReserveOrder(Order order)
         {
             var httpRequest = (HttpWebRequest)WebRequest.Create(url);
             httpRequest.Method = "POST";
@@ -23,7 +31,9 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             httpRequest.Accept = "application/json";
             httpRequest.ContentType = "application/json";
 
-            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(orderItem);
+            var reservedOrder = PrepareReservedOrder(order);
+
+            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(reservedOrder);
 
             using (var streamWriter = new StreamWriter(httpRequest.GetRequestStream()))
             {
@@ -38,5 +48,19 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
 
             return httpResponse;
         }
+
+        private OrderReserved PrepareReservedOrder(Order order)
+            => new OrderReserved
+            (
+                order.BuyerId,
+                order.ShipToAddress,
+                order.OrderItems.Select(o => new OrderItemReserved
+                                            (
+                                                o.ItemOrdered.CatalogItemId,
+                                                o.ItemOrdered.ProductName,
+                                                o.Units
+                                             )),
+                order.Total()
+            );
     }
 }
