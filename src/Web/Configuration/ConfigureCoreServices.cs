@@ -12,9 +12,11 @@ namespace Microsoft.eShopWeb.Web.Configuration
     {
         public static IServiceCollection AddCoreServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton<IConfiguration>(configuration);
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
             services.AddScoped<IBasketService, BasketService>();
-            services.AddScoped<IReservationService, ReservationService>();
+            services.AddScoped<IItemReserver, ItemReserver>();
+            services.AddScoped<IOrderDeliverer, OrderDeliverer>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddSingleton<IUriComposer>(new UriComposer(configuration.Get<CatalogSettings>()));

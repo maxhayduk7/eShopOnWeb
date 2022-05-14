@@ -1,10 +1,10 @@
 ﻿using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Microsoft.eShopWeb.ApplicationCore.Interfaces
 {
-    public interface IReservationService
+    public interface IOrderDeliverer
     {
-        void Reserve(Order order);
+        Task DeliverOrderAsync(Order order);
     }
 }

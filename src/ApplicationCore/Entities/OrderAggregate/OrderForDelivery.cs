@@ -2,16 +2,20 @@
 
 namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
 {
-    public class OrderReserved
+    public class OrderForDelivery
     {
         public string BuyerId { get; set; }
         public Address ShipToAddress { get; set; }
 
-        public IEnumerable<OrderItemReserved> Items { get; set; }
+        public IEnumerable<ItemReserved> Items { get; set; }
 
         public decimal Total { get; set; }
 
-        public OrderReserved(string buyerId, Address shipToAddress, IEnumerable<OrderItemReserved> items, decimal total)
+        public OrderForDelivery()
+        {
+        }
+
+        public OrderForDelivery(string buyerId, Address shipToAddress, IEnumerable<ItemReserved> items, decimal total)
         {
             BuyerId = buyerId;
             ShipToAddress = shipToAddress;
@@ -20,13 +24,17 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
         }
     }
 
-    public class OrderItemReserved
+    public class ItemReserved
     {
         public int CatalogItemId { get; set; }
         public string ProductName { get; set; }
         public int Units { get; set; }
 
-        public OrderItemReserved(int catalogItemId, string productName, int units)
+        public ItemReserved()
+        {
+        }
+
+        public ItemReserved(int catalogItemId, string productName, int units)
         {
             CatalogItemId = catalogItemId;
             ProductName = productName;
