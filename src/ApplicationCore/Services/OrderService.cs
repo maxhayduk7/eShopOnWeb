@@ -4,6 +4,7 @@ using Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Specifications;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,16 +16,25 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
         private readonly IUriComposer _uriComposer;
         private readonly IAsyncRepository<Basket> _basketRepository;
         private readonly IAsyncRepository<CatalogItem> _itemRepository;
+        private readonly IItemReserver _orderReserver;
+        private readonly IOrderDeliverer _orderDeliverer;
+        private readonly IAppLogger<OrderService> _appLogger;
 
         public OrderService(IAsyncRepository<Basket> basketRepository,
             IAsyncRepository<CatalogItem> itemRepository,
             IAsyncRepository<Order> orderRepository,
-            IUriComposer uriComposer)
+            IUriComposer uriComposer,
+            IItemReserver orderReserver,
+            IOrderDeliverer orderDeliverer,
+            IAppLogger<OrderService> appLogger)
         {
             _orderRepository = orderRepository;
             _uriComposer = uriComposer;
             _basketRepository = basketRepository;
             _itemRepository = itemRepository;
+            _orderReserver = orderReserver;
+            _orderDeliverer = orderDeliverer;
+            _appLogger = appLogger;
         }
 
         public async Task CreateOrderAsync(int basketId, Address shippingAddress)
@@ -49,6 +59,12 @@ namespace Microsoft.eShopWeb.ApplicationCore.Services
             var order = new Order(basket.BuyerId, shippingAddress, items);
 
             await _orderRepository.AddAsync(order);
+
+            await _orderReserver.ReserveItemsAsync(items);
+
+            await _orderDeliverer.DeliverOrderAsync(order);
+
+            _appLogger.LogInformation($"Order[{order.Id}] was created - {DateTime.UtcNow}");
         }
     }
 }
